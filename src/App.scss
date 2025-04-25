@@ -1,0 +1,11 @@
+@use './styles/variables.scss' as v;
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.read-the-docs {
+  color: #888;
+}

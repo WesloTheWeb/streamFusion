@@ -1,0 +1,9 @@
+@use '../../styles/variables.scss' as v;
+
+.footerContainer {
+    background-color: #000;
+    width: 100%;
+    margin-top: auto;  // This pushes the footer to the bottom
+    padding: 1rem 2rem;
+    box-sizing: border-box;
+}

@@ -1,0 +1,83 @@
+@use './styles/variables.scss' as v;
+@use './assets/fonts/inter/inter.scss' as fonts;
+
+:root {
+  font-family: fonts.$inter-font;
+  line-height: 1.5;
+  font-weight: fonts.$font-weight-regular;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: v.$textColorDark;
+  color: v.$textColorLight;
+}
+
+a {
+  font-weight: fonts.$font-weight-medium;
+  color: v.$primaryLight;
+  text-decoration: inherit;
+}
+
+a:hover {
+  color: v.$secondaryLightColor;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: v.$textColorLight;
+  font-weight: fonts.$font-weight-semibold;
+}
+
+h1 {
+  font-size: 2.2rem;
+  line-height: 1.1;
+  padding-bottom: 0;
+  margin: 0;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: fonts.$font-weight-medium;
+  font-family: fonts.$inter-font;
+  background-color: v.$primary;
+  color: v.$textColorLight;
+  cursor: pointer;
+  transition: background-color 0.25s;
+}
+
+button:hover {
+  background-color: v.$primaryLight;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid v.$secondaryColor;
+}
+
+input, textarea, select {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid v.$borderDividerColor;
+  color: v.$textColorLight;
+  font-family: fonts.$inter-font;
+}
+
+code {
+  background-color: v.$primaryDark;
+  color: v.$textColorLight;
+  padding: 0.2em 0.4em;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', 'SF Mono', Monaco, Consolas, 'Liberation Mono', monospace;
+}
