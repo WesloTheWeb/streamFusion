@@ -2,6 +2,7 @@ import { useState } from 'react';
 import NavigationHeader from './components/NavigationHeader/NavigationHeader';
 import './App.scss';
 import Footer from './components/Footer/Footer';
+import SearchInput from './components/SearchInput/SearchInput';
 
 function App() {
   const [count, setCount] = useState(0)
@@ -12,7 +13,7 @@ function App() {
         <NavigationHeader />
       </header>
       <main>
-        content
+        <SearchInput />
       </main>
       {/* <div className="card">
         <button onClick={() => setCount((count) => count + 1)}>

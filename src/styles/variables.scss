@@ -1,24 +1,33 @@
 // ? Primary Colors
-  $primaryDark: #0A2342; // Deep blue for headers, navigation  
-  $primary: #2A6BA4; // Main blue for primary buttons and highlights  
-  $primaryLight: #4A8FE7; // Lighter blue for hover states  
+$primaryDark: #0A2342; // Deep blue for headers, navigation  
+$primary: #2A6BA4; // Main blue for primary buttons and highlights  
+$primaryLight: #4A8FE7; // Lighter blue for hover states  
 
 // ? Secondary Colors
-  $secondaryColor: #0CB4CE; // Cyan for accents and secondary elements  
-  $secondaryLightColor: #4DD0E4; // Light cyan for highlights and hover states  
+$secondaryColor: #0CB4CE; // Cyan for accents and secondary elements  
+$secondaryLightColor: #4DD0E4; // Light cyan for highlights and hover states  
 
 // ? Neutral Colors TEXT
-  $textColorDark: #0F1A2A; // Near black for main text, backgrounds  
-  $textColorSecondaryDark: #2C3E50; // Dark gray for secondary text  
-  $textColorLight: #F5F7FA; // Near white for backgrounds, text on dark
+$textColorDark: #0F1A2A; // Near black for main text, backgrounds  
+$textColorSecondaryDark: #2C3E50; // Dark gray for secondary text  
+$textColorLight: #F5F7FA; // Near white for backgrounds, text on dark
 
- // ? Borders
-  $borderDividerColor: #607D8B;
-  $disabledStateColor: #B0BEC5;
+// ? Borders
+$borderDividerColor: #607D8B;
+$disabledStateColor: #B0BEC5;
 
 // ? State Colors
-  $errorStateColor: #FF3D71; // Red for errors
-  $warningStateColor: #FFC107; // Yellow for warnings
-  $successStateColor: #00C853; // Green for success
+$errorStateColor: #FF3D71; // Red for errors
+$warningStateColor: #FFC107; // Yellow for warnings
+$successStateColor: #00C853; // Green for success
 
-  $gradientMain: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+$gradientMain: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+
+// ? Modes
+$twitch-primary: #6441a5;
+$twitch-secondary: #b9a3e3;
+$twitch-hover: #7d5bbe;
+
+$youtube-primary: #ff0000;
+$youtube-secondary: #ffffff;
+$youtube-hover: #cc0000;
