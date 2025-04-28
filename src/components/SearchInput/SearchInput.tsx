@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { setQuery, setPlatform, searchVideos } from '../../store/slices/searchSlice';
 import classes from './SearchInput.module.scss';
 
 const { searchContainer, modeContainer, activeButton, twitchButton, youtubeButton } = classes;
