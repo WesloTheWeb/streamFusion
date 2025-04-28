@@ -4,7 +4,7 @@ import classes from './SearchInput.module.scss';
 const { searchContainer, modeContainer, activeButton, twitchButton, youtubeButton } = classes;
 
 const SearchInput = () => {
-    const [mode, setMode] = useState('Twitch');
+    const [mode, setMode] = useState('YouTube');
     
     const handleModeChange = (selectedMode: string) => {
         setMode(selectedMode);
@@ -19,6 +19,7 @@ const SearchInput = () => {
             <section className={modeContainer}>
                 <button 
                     className={`${mode === 'Twitch' ? activeButton : ''} ${twitchButton}`}
+                    disabled
                     onClick={() => handleModeChange('Twitch')}
                 >
                     Twitch

@@ -57,6 +57,12 @@
         background-color: v.$twitch-hover;
         color: white;
     }
+
+    &:disabled {
+        background-color: rgb(82, 76, 76);
+        color: #908f8f;
+        cursor: not-allowed;
+    }
 }
 
 .youtubeButton {
