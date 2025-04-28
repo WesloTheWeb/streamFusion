@@ -1,9 +1,14 @@
 import { useState, FormEvent } from 'react';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setQuery, setPlatform, searchVideos } from '../../store/slices/searchSlice';
+import SearchBar from './SearchBar';
 import classes from './SearchInput.module.scss';
 
-const { searchContainer, modeContainer, activeButton, twitchButton, youtubeButton } = classes;
+const {
+    searchContainer,
+    modeContainer,
+    activeButton,
+    twitchButton,
+    youtubeButton
+} = classes;
 
 interface SearchInputProps {
     onSearch?: (query: string, mode: 'Twitch' | 'YouTube') => void;
@@ -28,23 +33,23 @@ const SearchInput = ({
 
     const handleModeChange = (selectedMode: 'Twitch' | 'YouTube') => {
         setMode(selectedMode);
-        console.log(`Mode is now ${selectedMode}`);
     };
 
     return (
         <form className={searchContainer} onSubmit={handleSubmit}>
-            <input
-                placeholder={`Search ${mode} videos...`}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                disabled={isLoading}
+            <SearchBar
+                query={query}
+                mode={mode}
+                setQuery={setQuery}
+                isLoading={isLoading}
+                onSubmit={handleSubmit}
             />
             <section className={modeContainer}>
                 <button
                     type="button"
                     className={`${mode === 'Twitch' ? activeButton : ''} ${twitchButton}`}
                     onClick={() => handleModeChange('Twitch')}
-                    disabled={true} 
+                    disabled={true}
                 >
                     Twitch
                 </button>
@@ -56,9 +61,6 @@ const SearchInput = ({
                     YouTube
                 </button>
             </section>
-            <button type="submit" disabled={!query.trim() || isLoading}>
-                Search
-            </button>
         </form>
     );
 };
