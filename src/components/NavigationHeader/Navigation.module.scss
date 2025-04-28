@@ -7,6 +7,12 @@
     background-color: v.$primaryDark;
     padding: 1.2rem;
 
+    h1 {
+        @media #{v.$mq-smallScreen} {
+            font-size: 1.3rem;
+        }
+    }
+
     a {
         margin: 0 .75rem;
     }

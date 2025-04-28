@@ -8,13 +8,18 @@
     margin: 0 auto;
     gap: 1rem;
 
+    @media #{v.$mq-smallScreen} {
+        display: block;
+        margin: 1rem 0 2rem 0;
+    }
+
     input {
         padding: 1rem;
         width: 70%;
         border-radius: 4px;
         border: 1px solid #ccc;
         font-size: 1rem;
-        
+
         &:focus {
             outline: none;
             box-shadow: 0 0 0 2px rgba(100, 65, 165, 0.3);
@@ -26,6 +31,11 @@
     display: flex;
     gap: 1rem;
 
+    @media #{v.$mq-smallScreen} {
+        display: block;
+        margin: 1.3rem auto
+    }
+
     button {
         padding: 0.75rem 1.25rem;
         border: none;
@@ -33,9 +43,13 @@
         font-weight: 600;
         cursor: pointer;
         transition: all 0.2s ease;
-        
+
         &:hover {
             opacity: 0.9;
+        }
+
+        @media #{v.$mq-smallScreen} {
+            margin: 0 1rem;
         }
     }
 }
@@ -48,11 +62,11 @@
 .twitchButton {
     background-color: v.$twitch-primary;
     color: v.$twitch-secondary;
-    
+
     &:hover {
         background-color: v.$twitch-hover;
     }
-    
+
     &.activeButton {
         background-color: v.$twitch-hover;
         color: white;
@@ -68,11 +82,11 @@
 .youtubeButton {
     background-color: v.$youtube-primary;
     color: v.$youtube-secondary;
-    
+
     &:hover {
         background-color: v.$youtube-hover;
     }
-    
+
     &.activeButton {
         background-color: v.$youtube-hover;
         color: white;
