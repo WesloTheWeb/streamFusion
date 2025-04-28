@@ -44,7 +44,7 @@ const SearchInput = ({
                     type="button"
                     className={`${mode === 'Twitch' ? activeButton : ''} ${twitchButton}`}
                     onClick={() => handleModeChange('Twitch')}
-                    disabled={true} // Keeping Twitch disabled as per your original code
+                    disabled={true} 
                 >
                     Twitch
                 </button>

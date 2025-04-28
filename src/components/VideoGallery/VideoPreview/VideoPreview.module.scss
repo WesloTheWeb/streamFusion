@@ -6,10 +6,33 @@
   transition: transform 0.2s ease;
   cursor: pointer;
   margin-bottom: 1rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
 
   &:hover {
     transform: translateY(-4px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+    &.twitchVideo::before {
+      border-color: v.$twitch-primary;
+    }
+
+    &.youtubeVideo::before {
+      border-color: red;
+    }
   }
 }
 
@@ -19,6 +42,7 @@
   padding-top: 56.25%; // 16:9 aspect ratio
   background-color: #7f797963;
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .thumbnail {
@@ -30,14 +54,11 @@
   object-fit: cover;
 }
 
-.duration {
-  position: absolute;
+.durationTag {
   bottom: 8px;
   right: 8px;
-  background-color: rgba(0, 0, 0, 0.7);
   color: white;
-  padding: 4px 6px;
-  border-radius: 4px;
+  padding: .5rem;
   font-size: 0.8rem;
   font-weight: 500;
 }
@@ -45,16 +66,15 @@
 // Badges
 .sourceBadge {
   position: absolute;
+  bottom: 8px;
   right: 8px;
-  padding: .10rem;
-  padding-left: 0.5rem; 
-   border-radius: 2px; /* Flatter badge like in your screenshot */
+  padding: 0.1rem .5rem;
+  border-radius: 2px;
   font-size: 0.7rem;
   font-weight: bold;
   text-transform: uppercase;
-  min-width: 30%;
   text-align: left;
-  letter-spacing: 0.5px; /* Slightly spread letters */
+  letter-spacing: 0.5px;
 }
 
 .twitchBadge {
@@ -63,12 +83,12 @@
 }
 
 .youtubeBadge {
-  background-color: red; /* Bright red matching your screenshot */
+  background-color: red;
   color: white;
 }
 
 .videoInfo {
-  padding: 12px;
+  padding: .5rem;
 }
 
 .videoTitle {

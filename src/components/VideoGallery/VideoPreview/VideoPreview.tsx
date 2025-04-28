@@ -1,11 +1,11 @@
 import { formatDistanceToNow } from 'date-fns';
 import classes from './VideoPreview.module.scss';
 
-  const {
+const {
   videoPreviewContainer,
   thumbnailContainer,
   thumbnail,
-  duration,
+  durationTag,
   sourceBadge,
   twitchBadge,
   youtubeBadge,
@@ -14,7 +14,9 @@ import classes from './VideoPreview.module.scss';
   channelName,
   videoMetadata,
   viewCount: viewCountClass,
-  publishedAt: publishedAtClass
+  publishedAt: publishedAtClass,
+  twitchVideo,
+  youtubeVideo
 } = classes;
 
 interface VideoPreviewProps {
@@ -50,19 +52,22 @@ const VideoPreview = ({
   const formattedDate = publishedAt
     ? formatDistanceToNow(new Date(publishedAt), { addSuffix: true })
     : '';
-    
+
+  const truncatedAltText = title.length > 60 ? `${title.substring(0, 60)}...` : title;
+  const modeContainerClass = `${videoPreviewContainer} ${source === 'Twitch' ? twitchVideo : youtubeVideo}`;
+
   return (
     <article
-      className={videoPreviewContainer}
+      className={modeContainerClass}
       onClick={() => onSelect(id, source)}
     >
       <figure className={thumbnailContainer}>
         <img
           src={thumbnailUrl}
-          alt={title}
+          alt={truncatedAltText}
           className={thumbnail}
         />
-        {duration && <span className={duration}>{duration}</span>}
+        {duration && <span className={durationTag}>{duration}</span>}
         <span className={`${sourceBadge} ${source === 'Twitch' ? twitchBadge : youtubeBadge}`}>
           {source}
         </span>

@@ -9,28 +9,44 @@
   margin: 0 auto;
 }
 
+// Updated header styling
 .galleryHeader {
   grid-column: 1 / -1;
   margin-bottom: 24px;
   font-size: 1.75rem;
   font-weight: 600;
-  color: #333;
-  padding-left: 12px;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
   position: relative;
-  
-  &::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    width: 4px;
-    background-color: v.$youtube-primary;
+
+  // YouTube specific styling
+  &.youtubeHeader {
+    background-color: red;
+
+    svg {
+      margin-right: 12px;
+      height: 24px;
+      width: auto;
+    }
   }
-  
-  &.twitchHeader::before {
+
+  // Twitch specific styling
+  &.twitchHeader {
     background-color: v.$twitch-primary;
+
+    svg {
+      margin-right: 12px;
+      height: 24px;
+      width: auto;
+    }
   }
+}
+
+.headerText {
+  margin-left: 8px;
 }
 
 .emptyState {
@@ -49,7 +65,7 @@
   padding: 60px 0;
   color: #606060;
   font-size: 1.1rem;
-  
+
   .spinner {
     display: inline-block;
     width: 40px;
@@ -60,9 +76,11 @@
     animation: spin 1s ease-in-out infinite;
     margin-bottom: 16px;
   }
-  
+
   @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
 }
 
@@ -78,7 +96,7 @@
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     padding: 16px;
   }
-  
+
   .galleryHeader {
     font-size: 1.5rem;
     margin-bottom: 16px;
