@@ -1,0 +1,43 @@
+@use '../../styles/variables.scss' as v;
+
+.videoGalleryContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.galleryHeader {
+  grid-column: 1 / -1;
+  margin-bottom: 16px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 0;
+  color: #606060;
+}
+
+.loadingState {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 40px 0;
+  color: #606060;
+}
+
+@media (max-width: 768px) {
+  .videoGalleryContainer {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .videoGalleryContainer {
+    grid-template-columns: 1fr;
+  }
+}
