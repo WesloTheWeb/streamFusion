@@ -1,39 +1,65 @@
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setQuery, setPlatform, searchVideos } from '../../store/slices/searchSlice';
 import classes from './SearchInput.module.scss';
 
 const { searchContainer, modeContainer, activeButton, twitchButton, youtubeButton } = classes;
 
-const SearchInput = () => {
-    const [mode, setMode] = useState('YouTube');
-    
-    const handleModeChange = (selectedMode: string) => {
+interface SearchInputProps {
+    onSearch?: (query: string, mode: 'Twitch' | 'YouTube') => void;
+    initialMode?: 'Twitch' | 'YouTube';
+    isLoading?: boolean;
+};
+
+const SearchInput = ({
+    onSearch,
+    initialMode = 'YouTube',
+    isLoading = false
+}: SearchInputProps = {}) => {
+    const [mode, setMode] = useState<'Twitch' | 'YouTube'>(initialMode);
+    const [query, setQuery] = useState('');
+
+    const handleSubmit = (e: FormEvent) => {
+        e.preventDefault();
+        if (query.trim() && onSearch) {
+            onSearch(query, mode);
+        }
+    };
+
+    const handleModeChange = (selectedMode: 'Twitch' | 'YouTube') => {
         setMode(selectedMode);
-        console.log(`Mode is now ${mode}`);
+        console.log(`Mode is now ${selectedMode}`);
     };
 
     return (
-        <div className={searchContainer}>
+        <form className={searchContainer} onSubmit={handleSubmit}>
             <input
                 placeholder={`Search ${mode} videos...`}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                disabled={isLoading}
             />
             <section className={modeContainer}>
-                <button 
+                <button
+                    type="button"
                     className={`${mode === 'Twitch' ? activeButton : ''} ${twitchButton}`}
-                    disabled
                     onClick={() => handleModeChange('Twitch')}
+                    disabled={true} // Keeping Twitch disabled as per your original code
                 >
                     Twitch
                 </button>
-                <button 
+                <button
+                    type="button"
                     className={`${mode === 'YouTube' ? activeButton : ''} ${youtubeButton}`}
                     onClick={() => handleModeChange('YouTube')}
                 >
                     YouTube
                 </button>
             </section>
-        </div>
+            <button type="submit" disabled={!query.trim() || isLoading}>
+                Search
+            </button>
+        </form>
     );
 };
 

@@ -1,7 +1,7 @@
 import { formatDistanceToNow } from 'date-fns';
 import classes from './VideoPreview.module.scss';
 
-const {
+  const {
   videoPreviewContainer,
   thumbnailContainer,
   thumbnail,
@@ -27,7 +27,7 @@ interface VideoPreviewProps {
   publishedAt?: string;
   source: 'Twitch' | 'YouTube';
   onSelect: (id: string, source: 'Twitch' | 'YouTube') => void;
-};
+}
 
 const VideoPreview = ({
   id,
@@ -50,7 +50,7 @@ const VideoPreview = ({
   const formattedDate = publishedAt
     ? formatDistanceToNow(new Date(publishedAt), { addSuffix: true })
     : '';
-
+    
   return (
     <article
       className={videoPreviewContainer}

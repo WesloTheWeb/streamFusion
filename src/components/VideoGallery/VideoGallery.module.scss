@@ -3,36 +3,85 @@
 .videoGalleryContainer {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-  padding: 20px;
+  gap: 24px;
+  padding: 24px;
   max-width: 1400px;
   margin: 0 auto;
 }
 
 .galleryHeader {
   grid-column: 1 / -1;
-  margin-bottom: 16px;
-  font-size: 1.5rem;
+  margin-bottom: 24px;
+  font-size: 1.75rem;
   font-weight: 600;
+  color: #333;
+  padding-left: 12px;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background-color: v.$youtube-primary;
+  }
+  
+  &.twitchHeader::before {
+    background-color: v.$twitch-primary;
+  }
 }
 
 .emptyState {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 40px 0;
+  padding: 60px 0;
   color: #606060;
+  font-size: 1.1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
 }
 
 .loadingState {
   grid-column: 1 / -1;
   text-align: center;
-  padding: 40px 0;
+  padding: 60px 0;
   color: #606060;
+  font-size: 1.1rem;
+  
+  .spinner {
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: #767676;
+    animation: spin 1s ease-in-out infinite;
+    margin-bottom: 16px;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+}
+
+@media (max-width: 1200px) {
+  .videoGalleryContainer {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
 }
 
 @media (max-width: 768px) {
   .videoGalleryContainer {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    padding: 16px;
+  }
+  
+  .galleryHeader {
+    font-size: 1.5rem;
+    margin-bottom: 16px;
   }
 }
 

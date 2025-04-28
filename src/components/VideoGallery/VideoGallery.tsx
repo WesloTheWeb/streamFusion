@@ -5,7 +5,9 @@ const {
   videoGalleryContainer,
   galleryHeader,
   emptyState,
-  loadingState
+  loadingState,
+  twitchHeader,
+  spinner
 } = classes;
 
 interface VideoItem {
@@ -32,14 +34,23 @@ const VideoGallery = ({
   isLoading = false,
   onVideoSelect
 }: VideoGalleryProps) => {
+  // Determine if we should use Twitch styling based on the title
+  const isTwitchGallery = title.includes('Twitch');
+  const headerClasses = `${galleryHeader} ${isTwitchGallery ? twitchHeader : ''}`;
+  
   return (
     <section className={videoGalleryContainer}>
-      {title && <h2 className={galleryHeader}>{title}</h2>}
+      {title && <h2 className={headerClasses}>{title}</h2>}
       
       {isLoading ? (
-        <div className={loadingState}>Loading videos...</div>
+        <div className={loadingState}>
+          <div className={spinner}></div>
+          <p>Loading videos...</p>
+        </div>
       ) : videos.length === 0 ? (
-        <div className={emptyState}>No videos found. Try a different search.</div>
+        <div className={emptyState}>
+          <p>No videos found. Try a different search.</p>
+        </div>
       ) : (
         videos.map(video => (
           <VideoPreview
