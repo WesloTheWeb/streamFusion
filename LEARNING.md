@@ -10,3 +10,10 @@ reviewed by AI to ensure accuracy and stick to the point.
 1. HLS (HTTP Live Streaming): Used by both YouTube and Twitch. YouTube offers HLS streams for their live content, and Twitch uses HLS as their primary streaming protocol. Many VODs (Video On Demand) from both platforms are also available in HLS format.
 
 2. DASH (Dynamic Adaptive Streaming over HTTP): Used primarily by YouTube for their on-demand content. Twitch has historically used HLS more, but they may support DASH in some contexts as well.
+
+
+## API Rules
+1. Apparently YouTube only allows playback through:
+- Their own embedded player (iframe)
+- Their official APIs
+So I had to create a YouTube component with the iFrame

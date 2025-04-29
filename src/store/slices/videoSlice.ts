@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { searchYouTube, getVideoDetails, formatDuration } from '../../services/YouTubeService/youtubeService';
 import { RootState } from '../index';
 
@@ -91,6 +91,7 @@ export const fetchVideoDetails = createAsyncThunk(
         thumbnail: videoDetail.snippet.thumbnails.high.url,
         source: 'YouTube' as const,
         url: `https://www.youtube.com/watch?v=${videoDetail.id}`,
+        videoId: videoDetail.id,
         publishedAt: videoDetail.snippet.publishedAt,
         channelTitle: videoDetail.snippet.channelTitle,
         viewCount: videoDetail.statistics?.viewCount ? parseInt(videoDetail.statistics.viewCount) : undefined,
@@ -157,8 +158,9 @@ export const videoSlice = createSlice({
   },
 });
 
-export const selectVideoItems = (state: RootState) =>
-  state.videos.videos.map(video => ({
+export const selectVideoItems = createSelector(
+  [(state: RootState) => state.videos.videos],
+  (videos) => videos.map(video => ({
     id: video.id,
     title: video.title,
     thumbnailUrl: video.thumbnail,
@@ -166,8 +168,9 @@ export const selectVideoItems = (state: RootState) =>
     viewCount: video.viewCount,
     duration: video.duration,
     publishedAt: video.publishedAt,
-    source: video.source
-  }));
+    source: video.source,
+  }))
+);
 
 export const { setSelectedVideo, clearVideos } = videoSlice.actions;
 

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { fetchYouTubeVideos, clearVideos } from './videoSlice';
 import type { RootState } from '../index';
 
 export interface SearchState {
@@ -15,22 +16,25 @@ const initialState: SearchState = {
     error: null,
 };
 
-export const searchVideos = createAsyncThunk(
-    'search/searchVideos',
-    async (_, { getState, rejectWithValue }) => {
+export const performSearch = createAsyncThunk(
+    'search/performSearch',
+    async ({ query, platform }: { query: string; platform: 'YouTube' | 'Twitch' }, { dispatch, rejectWithValue }) => {
         try {
-            const state = getState() as RootState;
-            const { query, platform } = state.search;
+            dispatch(setQuery(query));
+            dispatch(setPlatform(platform));
+            dispatch(clearVideos());
 
-            // TODO implement actual API calls later
-            // ! This is just a placeholder
-            if (platform === 'YouTube') {
-                // Call YouTube API
-                return [];
-            } else {
-                // Call Twitch API
-                return [];
-            }
+            if (query.trim()) {
+                if (platform === 'YouTube') {
+                    const result = await dispatch(fetchYouTubeVideos({ query })).unwrap();
+                    return result;
+                } else {
+                    // TODO: Future Twitch implementation
+                    return null;
+                }
+            };
+
+            return null;
         } catch (error) {
             return rejectWithValue((error as Error).message);
         };
@@ -54,14 +58,14 @@ export const searchSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(searchVideos.pending, (state) => {
+            .addCase(performSearch.pending, (state) => {
                 state.loading = true;
                 state.error = null;
             })
-            .addCase(searchVideos.fulfilled, (state) => {
+            .addCase(performSearch.fulfilled, (state) => {
                 state.loading = false;
             })
-            .addCase(searchVideos.rejected, (state, action) => {
+            .addCase(performSearch.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.payload as string;
             });
