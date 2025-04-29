@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { fetchYouTubeVideos, clearVideos } from './videoSlice';
-import type { RootState } from '../index';
 
 export interface SearchState {
     query: string;
