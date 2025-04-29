@@ -1,0 +1,126 @@
+@use '../../../styles/variables.scss' as v;
+
+.welcomeContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+.welcomeContent {
+  text-align: center;
+  max-width: 900px;
+}
+
+.welcomeTitle {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(90deg, #ff0000, #9146ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.welcomeDescription {
+  font-size: 1.25rem;
+  color: #a0a0b8;
+  margin-bottom: 3rem;
+  line-height: 1.6;
+}
+
+.featureGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.featureCard {
+  background-color: #1a1a2e;
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  min-height: 280px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.youtubeFeature {
+  border-top: 4px solid red;
+  
+  .featureIcon {
+    color: red;
+  }
+}
+
+.twitchFeature {
+  border-top: 4px solid v.$twitch-primary;
+  
+  .featureIcon {
+    color: v.$twitch-primary;
+  }
+}
+
+.featureIcon {
+  margin-bottom: 1.5rem;
+}
+
+.featureTitle {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.featureText {
+  font-size: 1rem;
+  color: #a0a0b8;
+  line-height: 1.5;
+}
+
+@media (max-width: 1024px) {
+  .welcomeContainer {
+    padding: 2.5rem 1.5rem;
+  }
+  
+  .welcomeTitle {
+    font-size: 2.2rem;
+  }
+  
+  .welcomeDescription {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .welcomeContainer {
+    padding: 2rem 1rem;
+  }
+  
+  .welcomeTitle {
+    font-size: 2rem;
+  }
+  
+  .welcomeDescription {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .featureGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcomeTitle {
+    font-size: 1.75rem;
+  }
+}
