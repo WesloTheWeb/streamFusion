@@ -1,0 +1,130 @@
+@use '../../../styles/variables.scss' as v;
+
+.videoPreviewContainer {
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.2s ease;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 8px;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+    &.twitchVideo::before {
+      border-color: v.$twitch-primary;
+    }
+
+    &.youtubeVideo::before {
+      border-color: red;
+    }
+  }
+}
+
+.thumbnailContainer {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; // 16:9 aspect ratio
+  background-color: #7f797963;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.thumbnail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.durationTag {
+  bottom: 8px;
+  right: 8px;
+  color: white;
+  padding: .5rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+// Badges
+.sourceBadge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 0.1rem .5rem;
+  border-radius: 2px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: left;
+  letter-spacing: 0.5px;
+}
+
+.twitchBadge {
+  background-color: v.$twitch-primary;
+  color: white;
+}
+
+.youtubeBadge {
+  background-color: red;
+  color: white;
+}
+
+.videoInfo {
+  padding: .5rem;
+}
+
+.videoTitle {
+  font-weight: 600;
+  margin-bottom: 8px;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.3;
+}
+
+.channelName {
+  font-size: 0.9rem;
+  color: #606060;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.videoMetadata {
+  display: flex;
+  font-size: 0.8rem;
+  color: #606060;
+  align-items: center;
+}
+
+.viewCount {
+  margin-right: 8px;
+}
+
+.publishedAt {
+  position: relative;
+
+  &::before {
+    content: '•';
+    margin: 0 4px;
+  }
+}

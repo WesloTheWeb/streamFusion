@@ -1,74 +1,79 @@
 @use '../../styles/variables.scss' as v;
 
-
 .searchContainer {
     display: flex;
-    justify-content: center;
-    padding: 1rem;
-    margin: 0 auto;
-    gap: 1rem;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    width: 100%;
+    background-color: #0e1621;
+    box-sizing: border-box;
 
-    input {
-        padding: 1rem;
-        width: 70%;
-        border-radius: 4px;
-        border: 1px solid #ccc;
-        font-size: 1rem;
-        
-        &:focus {
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(100, 65, 165, 0.3);
-        }
+    @media #{v.$mq-smallScreen} {
+        flex-direction: column;
+        gap: 12px;
     }
 }
 
 .modeContainer {
     display: flex;
-    gap: 1rem;
+    gap: 8px;
+
+    @media #{v.$mq-smallScreen} {
+        width: 100%;
+        justify-content: center;
+    }
 
     button {
-        padding: 0.75rem 1.25rem;
+        min-width: 90px;
+        height: 44px;
+        padding: 0 16px;
         border: none;
         border-radius: 4px;
         font-weight: 600;
+        font-size: 16px;
         cursor: pointer;
-        transition: all 0.2s ease;
-        
-        &:hover {
-            opacity: 0.9;
+        transition: background-color 0.15s;
+
+        &:active {
+            transform: translateY(1px);
         }
     }
 }
 
 .activeButton {
-    transform: scale(1.05);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 .twitchButton {
-    background-color: v.$twitch-primary;
-    color: v.$twitch-secondary;
-    
+    background-color: #6e6e6e;
+    color: white;
+
     &:hover {
-        background-color: v.$twitch-hover;
+        background-color: #7a7a7a;
     }
-    
+
     &.activeButton {
-        background-color: v.$twitch-hover;
-        color: white;
+        background-color: #6441a4;
+    }
+
+    &:disabled {
+        background-color: #555;
+        color: #999;
+        cursor: not-allowed;
+        box-shadow: none;
     }
 }
 
 .youtubeButton {
-    background-color: v.$youtube-primary;
-    color: v.$youtube-secondary;
-    
+    background-color: #ff0000;
+    color: white;
+
     &:hover {
-        background-color: v.$youtube-hover;
+        background-color: #d40000;
     }
-    
+
     &.activeButton {
-        background-color: v.$youtube-hover;
-        color: white;
+        background-color: #ff0000;
     }
 }

@@ -1,5 +1,5 @@
 // Navigation Title constants
-export const NAV_GITHUB_TITLE = `Github Repository`;
+export const NAV_GITHUB_TITLE = `Github`;
 export const NAV_HOME = `Home`;
 
 // Navigation Link contants

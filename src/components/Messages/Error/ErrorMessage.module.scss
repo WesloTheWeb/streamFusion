@@ -1,0 +1,139 @@
+@use '../../../styles/variables.scss' as v;
+
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #1a1a2e;
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  margin: 2rem auto;
+  max-width: 800px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.errorIcon {
+  color: #ff3d3d;
+  margin-bottom: 1.5rem;
+  
+  svg {
+    stroke-width: 1.5;
+  }
+}
+
+.errorContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 600px;
+}
+
+.errorTitle {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.errorMessage {
+  font-size: 1.1rem;
+  color: #a0a0b8;
+  margin-bottom: 2rem;
+  line-height: 1.5;
+}
+
+.retryButton {
+  background-color: #ff3d3d;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  
+  &:hover {
+    background-color: #ff5252;
+    transform: translateY(-2px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 61, 61, 0.3);
+  }
+}
+
+// YouTube styling variation
+.youtubeError {
+  .errorIcon {
+    color: red;
+  }
+  
+  .retryButton {
+    background-color: red;
+    
+    &:hover {
+      background-color: #ff3333;
+    }
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.3);
+    }
+  }
+}
+
+// Twitch styling variation
+.twitchError {
+  .errorIcon {
+    color: v.$twitch-primary;
+  }
+  
+  .retryButton {
+    background-color: v.$twitch-primary;
+    
+    &:hover {
+      background-color: #9e71ff;
+    }
+    
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(145, 70, 255, 0.3);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .errorContainer {
+    padding: 2rem 1.5rem;
+    margin: 1.5rem 1rem;
+  }
+  
+  .errorTitle {
+    font-size: 1.5rem;
+  }
+  
+  .errorMessage {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .errorContainer {
+    padding: 1.5rem 1rem;
+  }
+  
+  .errorIcon svg {
+    width: 36px;
+    height: 36px;
+  }
+  
+  .errorTitle {
+    font-size: 1.25rem;
+  }
+}
