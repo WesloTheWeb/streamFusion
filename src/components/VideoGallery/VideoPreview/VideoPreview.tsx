@@ -11,7 +11,7 @@ const {
   youtubeBadge,
   videoInfo,
   videoTitle,
-  channelName,
+  videoChannelName,
   videoMetadata,
   viewCount: viewCountClass,
   publishedAt: publishedAtClass,
@@ -74,7 +74,7 @@ const VideoPreview = ({
       </figure>
       <section className={videoInfo}>
         <h3 className={videoTitle}>{title}</h3>
-        <p className={channelName}>{channelName}</p>
+        <p className={videoChannelName}>{channelName}</p>
         <footer className={videoMetadata}>
           {viewCount !== undefined && (
             <span className={viewCountClass}>{formatViews(viewCount)} views</span>
