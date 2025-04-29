@@ -1,4 +1,5 @@
-const shaka = require('shaka-player');
+declare const shaka: any;
+import 'shaka-player';
 
 export const initializeShaka = (
     videoElement: HTMLVideoElement,

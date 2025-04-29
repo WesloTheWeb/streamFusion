@@ -1,14 +1,14 @@
-// TODO - Create YouTube Developer and get the API so we can use the fetch API
 // ? Holds search, videoDetails and format
 
-const API_KEY = 'YOUR_YOUTUBE_API_KEY'; // You'll need to get this from Google Developer Console
+const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
 
 export interface YouTubeSearchParams {
     query: string;
     maxResults?: number;
     pageToken?: string;
-}
+};
+
 
 export const searchYouTube = async ({ query, maxResults = 10, pageToken }: YouTubeSearchParams) => {
     const url = new URL(`${BASE_URL}/search`);
