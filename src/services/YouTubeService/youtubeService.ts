@@ -1,14 +1,8 @@
+import { YouTubeSearchParams } from "../../interfaces";
 // ? Holds search, videoDetails and format
 
 const API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 const BASE_URL = 'https://www.googleapis.com/youtube/v3';
-
-export interface YouTubeSearchParams {
-    query: string;
-    maxResults?: number;
-    pageToken?: string;
-};
-
 
 export const searchYouTube = async ({ query, maxResults = 10, pageToken }: YouTubeSearchParams) => {
     const url = new URL(`${BASE_URL}/search`);

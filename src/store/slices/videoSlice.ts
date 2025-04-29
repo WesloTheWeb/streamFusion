@@ -1,19 +1,7 @@
+import { RootState } from '../index';
+import { Video } from '../../interfaces';
 import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { searchYouTube, getVideoDetails, formatDuration } from '../../services/YouTubeService/youtubeService';
-import { RootState } from '../index';
-
-export interface Video {
-  id: string;
-  title: string;
-  description: string;
-  thumbnail: string;
-  source: 'YouTube' | 'Twitch';
-  url: string;
-  publishedAt: string;
-  channelTitle?: string;
-  viewCount?: number;
-  duration?: string;
-};
 
 interface VideoState {
   videos: Video[];

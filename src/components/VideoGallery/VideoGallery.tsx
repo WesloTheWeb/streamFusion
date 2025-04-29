@@ -1,3 +1,4 @@
+import { VideoItem } from '../../interfaces';
 import VideoPreview from './VideoPreview/VideoPreview';
 import classes from './VideoGallery.module.scss';
 
@@ -12,16 +13,6 @@ const {
   noResultsMessage
 } = classes;
 
-interface VideoItem {
-  id: string;
-  title: string;
-  thumbnailUrl: string;
-  channelName: string;
-  viewCount?: number;
-  duration?: string;
-  publishedAt?: string;
-  source: 'Twitch' | 'YouTube';
-}
 
 interface VideoGalleryProps {
   videos: VideoItem[];
