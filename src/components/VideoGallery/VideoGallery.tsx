@@ -7,9 +7,9 @@ const {
   youtubeHeader,
   twitchHeader,
   headerText,
-  emptyState,
   loadingState,
-  spinner
+  spinner,
+  noResultsMessage
 } = classes;
 
 interface VideoItem {
@@ -36,14 +36,11 @@ const VideoGallery = ({
   isLoading = false,
   onVideoSelect
 }: VideoGalleryProps) => {
-  // Determine if we should use Twitch or YouTube styling based on the title
   const isTwitchGallery = title.includes('Twitch');
   const isYouTubeGallery = title.includes('YouTube');
 
-  // Set header classes based on the platform
   const headerClasses = `${galleryHeader} ${isTwitchGallery ? twitchHeader : ''} ${isYouTubeGallery ? youtubeHeader : ''}`;
 
-  // Return proper platform SVG logo based on which gallery we're showing
   const renderLogo = () => {
     if (isYouTubeGallery) {
       return (
@@ -67,30 +64,30 @@ const VideoGallery = ({
         </svg>
       );
     }
-
     return null;
   };
 
-  return (
-    <section className={videoGalleryContainer}>
-      {title && (
-        <h2 className={headerClasses}>
-          {renderLogo()}
-          <span className={headerText}>{title}</span>
-        </h2>
-      )}
-
-      {isLoading ? (
+  const renderContent = () => {
+    if (isLoading) {
+      return (
         <div className={loadingState}>
           <div className={spinner}></div>
           <p>Loading videos...</p>
         </div>
-      ) : videos.length === 0 ? (
-        <div className={emptyState}>
+      );
+    };
+
+    if (videos.length === 0) {
+      return (
+        <div className={noResultsMessage}>
           <p>No videos found. Try a different search.</p>
         </div>
-      ) : (
-        videos.map(video => (
+      );
+    };
+
+    return (
+      <>
+        {videos.map(video => (
           <VideoPreview
             key={`${video.source}-${video.id}`}
             id={video.id}
@@ -103,8 +100,20 @@ const VideoGallery = ({
             source={video.source}
             onSelect={onVideoSelect}
           />
-        ))
+        ))}
+      </>
+    );
+  };
+
+  return (
+    <section className={videoGalleryContainer}>
+      {title && (
+        <h2 className={headerClasses}>
+          {renderLogo()}
+          <span className={headerText}>{title}</span>
+        </h2>
       )}
+      {renderContent()}
     </section>
   );
 };
