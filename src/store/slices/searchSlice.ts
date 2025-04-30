@@ -4,10 +4,11 @@ import {
     clearVideos, 
     fetchDemoVideos
  } from './videoSlice';
+import { VideoSource } from '../../interfaces';
 
 export interface SearchState {
     query: string;
-    platform: 'YouTube' | 'Twitch' | 'Demo';
+    platform: VideoSource;
     loading: boolean;
     error: string | null;
 }
@@ -21,7 +22,7 @@ const initialState: SearchState = {
 
 export const performSearch = createAsyncThunk(
     'search/performSearch',
-    async ({ query, platform }: { query: string; platform: 'YouTube' | 'Twitch' | 'Demo' }, { dispatch, rejectWithValue }) => {
+    async ({ query, platform }: { query: string; platform: VideoSource }, { dispatch, rejectWithValue }) => {
         try {
             dispatch(setQuery(query));
             dispatch(setPlatform(platform));
@@ -54,7 +55,7 @@ export const searchSlice = createSlice({
         setQuery: (state, action: PayloadAction<string>) => {
             state.query = action.payload;
         },
-        setPlatform: (state, action: PayloadAction<'YouTube' | 'Twitch' | 'Demo'>) => {
+        setPlatform: (state, action: PayloadAction<VideoSource>) => {
             state.platform = action.payload;
         },
         clearSearch: (state) => {

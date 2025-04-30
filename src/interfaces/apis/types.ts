@@ -1,9 +1,11 @@
+export type VideoSource = 'YouTube' | 'Twitch' | 'Demo';
+
 export interface Video {
     id: string;
     title: string;
     description: string;
     thumbnail: string;
-    source: 'YouTube' | 'Twitch' | 'Demo';
+    source: VideoSource;
     url: string;
     publishedAt: string;
     channelTitle?: string;

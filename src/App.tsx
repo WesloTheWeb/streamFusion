@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { performSearch } from './store/slices/searchSlice';
+import { VideoSource } from './interfaces';
 import { 
   selectVideoItems, 
   fetchVideoDetails, 
@@ -53,7 +54,7 @@ function App() {
     }
   };
 
-  const handleVideoSelect = (id: string, source: 'Twitch' | 'YouTube' | 'Demo') => {
+  const handleVideoSelect = (id: string, source: VideoSource) => {
     // Fetch detailed video information based on source
     if (source === 'YouTube') {
       dispatch(fetchVideoDetails(id));

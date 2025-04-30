@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
+import { VideoSource } from '../../../interfaces';
 import classes from './VideoPreview.module.scss';
 
 const {
@@ -27,8 +28,8 @@ interface VideoPreviewProps {
   viewCount?: number;
   duration?: string;
   publishedAt?: string;
-  source: 'Twitch' | 'YouTube' | 'Demo';
-  onSelect: (id: string, source: 'Twitch' | 'YouTube' | 'Demo') => void;
+  source: VideoSource;
+  onSelect: (id: string, source: VideoSource) => void;
 }
 
 const VideoPreview = ({

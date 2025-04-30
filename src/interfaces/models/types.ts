@@ -1,3 +1,5 @@
+import { VideoSource } from "../apis/types";
+
 export interface VideoItem {
     id: string;
     title: string;
@@ -6,7 +8,7 @@ export interface VideoItem {
     viewCount?: number;
     duration?: string;
     publishedAt?: string;
-    source: 'Twitch' | 'YouTube' | 'Demo';
+    source: VideoSource;
 };
 
 export interface DemoVideo {

@@ -1,4 +1,4 @@
-import { VideoItem } from '../../interfaces';
+import { VideoItem, VideoSource } from '../../interfaces';
 import VideoPreview from './VideoPreview/VideoPreview';
 import classes from './VideoGallery.module.scss';
 
@@ -19,7 +19,7 @@ interface VideoGalleryProps {
   videos: VideoItem[];
   title?: string;
   isLoading?: boolean;
-  onVideoSelect: (id: string, source: 'Twitch' | 'YouTube' | 'Demo') => void;
+  onVideoSelect: (id: string, source: VideoSource) => void;
 }
 
 const VideoGallery = ({
