@@ -36,5 +36,17 @@ export const getDemoVideos = (): DemoVideo[] => [
         source: 'Demo',
         streamUrl: 'https://d2zihajmogu5jn.cloudfront.net/sintel/master.m3u8',
         streamType: 'hls'
-    }
+    },
+    {
+        id: 'angel-one-dash',
+        title: 'Angel One (DASH Streaming)',
+        thumbnailUrl: 'https://storage.googleapis.com/shaka-demo-assets/thumbnails/angel-one.jpg',
+        channelName: 'Shaka Demo',
+        viewCount: 1200000,
+        duration: '3:25',
+        publishedAt: '2023-01-10T09:00:00Z',
+        source: 'Demo',
+        streamUrl: 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd',
+        streamType: 'dash'
+      },
 ];
