@@ -7,7 +7,8 @@ const {
     modeContainer,
     activeButton,
     twitchButton,
-    youtubeButton
+    youtubeButton,
+    demoButton
 } = classes;
 
 interface SearchInputProps {
@@ -35,6 +36,10 @@ const SearchInput = ({
         setMode(selectedMode);
     };
 
+    const handleDemoClickPullDemoVideos = () => {
+        console.log('demo clicked')
+    }
+
     return (
         <form className={searchContainer} onSubmit={handleSubmit}>
             <SearchBar
@@ -59,6 +64,13 @@ const SearchInput = ({
                     onClick={() => handleModeChange('YouTube')}
                 >
                     YouTube
+                </button>
+                <button
+                    type="button"
+                    className={demoButton}
+                    onClick={() =>}
+                >
+                    Demo
                 </button>
             </section>
         </form>
