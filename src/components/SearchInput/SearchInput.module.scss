@@ -80,5 +80,9 @@
 
 .demoButton {
     background-color: orange;
-    color: black;
+    color: #333;
+
+    &:hover:not(:disabled) {
+        background-color: darken(orange, 10%);
+    }
 }
