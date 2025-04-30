@@ -37,8 +37,9 @@ const SearchInput = ({
     };
 
     const handleDemoClickPullDemoVideos = () => {
+        // TODO - Demo logic
         console.log('demo clicked')
-    }
+    };
 
     return (
         <form className={searchContainer} onSubmit={handleSubmit}>
@@ -68,7 +69,7 @@ const SearchInput = ({
                 <button
                     type="button"
                     className={demoButton}
-                    onClick={() =>}
+                    onClick={handleDemoClickPullDemoVideos}
                 >
                     Demo
                 </button>
