@@ -27,8 +27,8 @@ interface VideoPreviewProps {
   viewCount?: number;
   duration?: string;
   publishedAt?: string;
-  source: 'Twitch' | 'YouTube';
-  onSelect: (id: string, source: 'Twitch' | 'YouTube') => void;
+  source: 'Twitch' | 'YouTube' | 'Demo';
+  onSelect: (id: string, source: 'Twitch' | 'YouTube' | 'Demo') => void;
 }
 
 const VideoPreview = ({

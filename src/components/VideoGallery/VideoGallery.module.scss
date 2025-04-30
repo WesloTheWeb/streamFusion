@@ -9,6 +9,7 @@
   margin: 0 auto;
 }
 
+// Updated header styling
 .galleryHeader {
   grid-column: 1 / -1;
   margin-bottom: 24px;
@@ -21,6 +22,7 @@
   align-items: center;
   position: relative;
 
+  // YouTube specific styling
   &.youtubeHeader {
     background-color: red;
 
@@ -31,8 +33,21 @@
     }
   }
 
+  // Twitch specific styling
   &.twitchHeader {
     background-color: v.$twitch-primary;
+
+    svg {
+      margin-right: 12px;
+      height: 24px;
+      width: auto;
+    }
+  }
+
+  // Demo specific styling
+  &.demoHeader {
+    background-color: #ffcc00;
+    color: #333;
 
     svg {
       margin-right: 12px;
@@ -50,9 +65,9 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 60px 0;
-  color: #d0d0d0;
+  color: #606060;
   font-size: 1.1rem;
-  background-color: #1a1a2e;
+  background-color: #f9f9f9;
   border-radius: 8px;
 }
 
@@ -60,14 +75,14 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 60px 0;
-  color: #d0d0d0;
+  color: #606060;
   font-size: 1.1rem;
 
   .spinner {
     display: inline-block;
     width: 40px;
     height: 40px;
-    border: 3px solid rgba(255, 255, 255, 0.1);
+    border: 3px solid rgba(0, 0, 0, 0.1);
     border-radius: 50%;
     border-top-color: #767676;
     animation: spin 1s ease-in-out infinite;

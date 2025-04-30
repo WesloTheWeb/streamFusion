@@ -7,6 +7,7 @@ const {
   galleryHeader,
   youtubeHeader,
   twitchHeader,
+  demoHeader,
   headerText,
   loadingState,
   spinner,
@@ -18,7 +19,7 @@ interface VideoGalleryProps {
   videos: VideoItem[];
   title?: string;
   isLoading?: boolean;
-  onVideoSelect: (id: string, source: 'Twitch' | 'YouTube') => void;
+  onVideoSelect: (id: string, source: 'Twitch' | 'YouTube' | 'Demo') => void;
 }
 
 const VideoGallery = ({
@@ -29,8 +30,9 @@ const VideoGallery = ({
 }: VideoGalleryProps) => {
   const isTwitchGallery = title.includes('Twitch');
   const isYouTubeGallery = title.includes('YouTube');
+  const isDemoGallery = title.includes('Demo');
 
-  const headerClasses = `${galleryHeader} ${isTwitchGallery ? twitchHeader : ''} ${isYouTubeGallery ? youtubeHeader : ''}`;
+  const headerClasses = `${galleryHeader} ${isTwitchGallery ? twitchHeader : ''} ${isYouTubeGallery ? youtubeHeader : ''} ${isDemoGallery ? demoHeader : ''}`;
 
   const renderLogo = () => {
     if (isYouTubeGallery) {
@@ -52,6 +54,13 @@ const VideoGallery = ({
             <path d="M4.5 1L2 3.5v9h3V15l2.5-2.5h2L14 8V1H4.5zM13 7.5l-2 2H9l-1.75 1.75V9.5H5V2h8v5.5z"></path>
             <path d="M11.5 3.75h-1v3h1v-3zM8.75 3.75h-1v3h1v-3z"></path>
           </g>
+        </svg>
+      );
+    } else if (isDemoGallery) {
+      return (
+        <svg viewBox="0 0 24 24" height="24px" width="24px" fill="#333333">
+          <path d="M21 3H3c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h5v2h8v-2h5c1.1 0 1.99-.9 1.99-2L23 5c0-1.11-.9-2-2-2zm0 14H3V5h18v12z"/>
+          <path d="M10 8v8l6-4z"/>
         </svg>
       );
     }
