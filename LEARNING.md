@@ -17,3 +17,6 @@ reviewed by AI to ensure accuracy and stick to the point.
 - Their own embedded player (iframe)
 - Their official APIs
 So I had to create a YouTube component with the iFrame
+
+## General
+- A lot goes on into codec and media players especially switching between formats.

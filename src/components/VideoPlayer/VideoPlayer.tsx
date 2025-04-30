@@ -50,6 +50,7 @@ const VideoPlayer = ({
   };
 
   // Initialize the appropriate player based on stream type
+  // TODO - Separate demo page for building and reconstructing players.
   const initializePlayer = async () => {
     if (!videoRef.current) return;
     
@@ -62,8 +63,6 @@ const VideoPlayer = ({
     console.log(`Initializing player for ${streamType} stream: ${src}`);
     
     try {
-      // Make sure video element is properly in the DOM before initializing
-      // Add a slight delay to ensure the DOM has time to update
       await new Promise(resolve => setTimeout(resolve, 100));
       
       // Initialize Video.js player
@@ -96,34 +95,25 @@ const VideoPlayer = ({
         });
       }
 
-      if (title) {
-        const titleOverlay = document.createElement('div');
-        titleOverlay.className = 'vjs-title-overlay';
-        titleOverlay.textContent = title;
-        playerRef.current.el().appendChild(titleOverlay);
-      }
-
       // For HLS streams, wait for video.js to be fully ready before initializing HLS.js
       if (streamType === 'hls') {
-        console.log('Using HLS.js for HLS stream');
+        // console.log('Using HLS.js for HLS stream');
         const hlsSupported = await isHlsSupported();
         
         if (hlsSupported) {
-          // Make sure the player is fully ready before attaching HLS
           playerRef.current.ready(() => {
             initializeHls(videoElement, src, handleError);
           });
         } else {
-          console.log('HLS.js not supported, falling back to native playback');
+          console.error('HLS.js not supported, falling back to native playback');
         }
       }
       // For DASH streams, use Shaka Player if supported
       else if (streamType === 'dash') {
-        console.log('Using Shaka Player for DASH stream');
+        // console.log('Using Shaka Player for DASH stream');
         const shakaSupported = await isShakaSupported();
         
         if (shakaSupported) {
-          // Wait for player to be ready
           playerRef.current.ready(() => {
             shakaRef.current = initializeShaka(videoElement, src, handleError);
           });
@@ -211,7 +201,7 @@ const VideoPlayer = ({
             </button>
           </div>
         )}
-        <div style={{ height: '480px', width: '100%' }}>
+        <div>
           <video
             ref={videoRef}
             className="video-js vjs-big-play-centered"
@@ -235,3 +225,5 @@ const VideoPlayer = ({
 };
 
 export default VideoPlayer;
+
+// TODO - Player construct and tear down is complex need a dedicated page for this.
