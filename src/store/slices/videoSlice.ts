@@ -1,5 +1,6 @@
 import { RootState } from '../index';
 import { Video } from '../../interfaces';
+import { getDemoVideos } from '../../config/demoVideoStreams/DemoVideoStreams';
 import { createSlice, createAsyncThunk, PayloadAction, createSelector } from '@reduxjs/toolkit';
 import { searchYouTube, getVideoDetails, formatDuration } from '../../services/YouTubeService/youtubeService';
 
@@ -91,6 +92,69 @@ export const fetchVideoDetails = createAsyncThunk(
   }
 );
 
+export const fetchDemoVideos = createAsyncThunk(
+  'videos/fetchDemoVideos',
+  async (_, { rejectWithValue }) => {
+    try {
+      const demoVideos = getDemoVideos();
+
+      const videos = demoVideos.map(demo => ({
+        id: demo.id,
+        title: demo.title,
+        description: `Demo video showcasing ${demo.streamType.toUpperCase()} streaming capabilities`,
+        thumbnail: demo.thumbnailUrl,
+        source: 'Demo' as const,
+        url: demo.streamUrl,
+        publishedAt: demo.publishedAt,
+        channelTitle: demo.channelName,
+        viewCount: demo.viewCount,
+        duration: demo.duration,
+        streamUrl: demo.streamUrl,
+        streamType: demo.streamType
+      }));
+
+      return {
+        videos,
+        totalResults: videos.length
+      };
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
+export const fetchDemoVideoDetails = createAsyncThunk(
+  'videos/fetchDemoVideoDetails',
+  async (videoId: string, { rejectWithValue }) => {
+    try {
+      const demoVideos = getDemoVideos();
+      const demoVideo = demoVideos.find(video => video.id === videoId);
+
+      if (!demoVideo) {
+        throw new Error('Demo video not found');
+      }
+
+      return {
+        id: demoVideo.id,
+        title: demoVideo.title,
+        description: `Demo video showcasing ${demoVideo.streamType.toUpperCase()} streaming capabilities`,
+        thumbnail: demoVideo.thumbnailUrl,
+        source: 'Demo' as const,
+        url: demoVideo.streamUrl,
+        videoId: demoVideo.id,
+        publishedAt: demoVideo.publishedAt,
+        channelTitle: demoVideo.channelName,
+        viewCount: demoVideo.viewCount,
+        duration: demoVideo.duration,
+        streamUrl: demoVideo.streamUrl,
+        streamType: demoVideo.streamType
+      };
+    } catch (error) {
+      return rejectWithValue((error as Error).message);
+    }
+  }
+);
+
 export const videoSlice = createSlice({
   name: 'videos',
   initialState,
@@ -142,7 +206,35 @@ export const videoSlice = createSlice({
       .addCase(fetchVideoDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
-      });
+      })
+      // Handle fetchDemoVideos thunk states
+      .addCase(fetchDemoVideos.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDemoVideos.fulfilled, (state, action) => {
+        state.loading = false;
+        state.videos = action.payload.videos;
+        state.totalResults = action.payload.totalResults;
+      })
+      .addCase(fetchDemoVideos.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
+
+      // Handle fetchDemoVideoDetails thunk states
+      .addCase(fetchDemoVideoDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchDemoVideoDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedVideo = action.payload;
+      })
+      .addCase(fetchDemoVideoDetails.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      })
   },
 });
 
@@ -157,6 +249,8 @@ export const selectVideoItems = createSelector(
     duration: video.duration,
     publishedAt: video.publishedAt,
     source: video.source,
+    streamUrl: video.streamUrl,
+    streamType: video.streamType
   }))
 );
 

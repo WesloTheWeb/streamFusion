@@ -2,8 +2,9 @@ import { useEffect, useRef } from 'react';
 import classes from '../VideoPlayer/VideoPlayer.module.scss';
 
 const {
-  'video-player-wrapper': videoPlayerWrapper,
-  'video-player': videoPlayer,
+  videoPlayerWrapper,
+  videoPlayer,
+  videoTitle
 } = classes;
 
 interface YouTubePlayerProps {
@@ -24,7 +25,7 @@ const YouTubePlayer = ({ videoId, autoplay = false, title }: YouTubePlayerProps)
 
   return (
     <div className={videoPlayerWrapper}>
-      {title && <h2 className={classes['video-title']}>{title}</h2>}
+      {title && <h2 className={videoTitle}>{title}</h2>}
       <div className={videoPlayer}>
         <iframe
           ref={iframeRef}

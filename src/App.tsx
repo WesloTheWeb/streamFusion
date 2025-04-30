@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from './store/hooks';
 import { performSearch } from './store/slices/searchSlice';
-import { selectVideoItems, fetchVideoDetails, clearVideos } from './store/slices/videoSlice';
+import { VideoSource } from './interfaces';
+import { 
+  selectVideoItems, 
+  fetchVideoDetails, 
+  clearVideos, 
+  fetchDemoVideos,
+  fetchDemoVideoDetails 
+} from './store/slices/videoSlice';
 import NavigationHeader from './components/NavigationHeader/NavigationHeader';
 import SearchInput from './components/SearchInput/SearchInput';
 import VideoGallery from './components/VideoGallery/VideoGallery';
@@ -29,19 +36,30 @@ function App() {
     setHasSearched(true);
   };
 
+  // We'll also set hasSearched to true when the search state in Redux changes
+  useEffect(() => {
+    if (platform === 'Demo' && formattedVideos.length > 0) {
+      setHasSearched(true);
+    }
+  }, [platform, formattedVideos.length]);
+
   const handleRetry = () => {
     if (query) {
       dispatch(performSearch({ query, platform }));
+    } else if (platform === 'Demo') {
+      dispatch(fetchDemoVideos());
     } else {
       dispatch(clearVideos());
       setHasSearched(false);
     }
   };
 
-  const handleVideoSelect = (id: string, source: 'Twitch' | 'YouTube') => {
-    // Fetch detailed video information
+  const handleVideoSelect = (id: string, source: VideoSource) => {
+    // Fetch detailed video information based on source
     if (source === 'YouTube') {
       dispatch(fetchVideoDetails(id));
+    } else if (source === 'Demo') {
+      dispatch(fetchDemoVideoDetails(id));
     } else {
       // TODO - Future Twitch implementation
       console.log('Twitch video playback not yet implemented');
@@ -62,14 +80,16 @@ function App() {
       <main>
         <SearchInput
           onSearch={handleSearch}
-          initialMode={platform}
+          initialMode={platform as 'Twitch' | 'YouTube'}
           isLoading={isLoading}
         />
         
         {error && (
           <ErrorMessage 
             message={error}
-            title={`Error ${platform === 'YouTube' ? 'searching YouTube' : 'searching Twitch'}`}
+            title={`Error ${platform === 'YouTube' ? 'searching YouTube' : 
+                         platform === 'Demo' ? 'loading demo videos' : 
+                         'searching Twitch'}`}
             onRetry={handleRetry}
           />
         )}
@@ -83,9 +103,10 @@ function App() {
             />
           ) : (
             <VideoPlayer
-              src={selectedVideo.url}
+              src={selectedVideo.streamUrl || selectedVideo.url}
               poster={selectedVideo.thumbnail}
               title={selectedVideo.title}
+              autoplay={true}
             />
           )
         )}
@@ -97,7 +118,9 @@ function App() {
         {(hasSearched || formattedVideos.length > 0) && (
           <VideoGallery
             videos={formattedVideos}
-            title={query ? `${platform} results for "${query}"` : `${platform} Videos`}
+            title={platform === 'Demo' ? 
+                  'Demo Videos' : 
+                  query ? `${platform} results for "${query}"` : `${platform} Videos`}
             isLoading={isLoading}
             onVideoSelect={handleVideoSelect}
           />

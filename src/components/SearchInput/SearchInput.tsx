@@ -1,4 +1,7 @@
 import { useState, FormEvent } from 'react';
+import { useAppDispatch } from '../../store/hooks';
+import { setPlatform } from '../../store/slices/searchSlice';
+import { fetchDemoVideos } from '../../store/slices/videoSlice';
 import SearchBar from './SearchBar';
 import classes from './SearchInput.module.scss';
 
@@ -7,7 +10,8 @@ const {
     modeContainer,
     activeButton,
     twitchButton,
-    youtubeButton
+    youtubeButton,
+    demoButton
 } = classes;
 
 interface SearchInputProps {
@@ -23,6 +27,7 @@ const SearchInput = ({
 }: SearchInputProps = {}) => {
     const [mode, setMode] = useState<'Twitch' | 'YouTube'>(initialMode);
     const [query, setQuery] = useState('');
+    const dispatch = useAppDispatch();
 
     const handleSubmit = (e: FormEvent) => {
         e.preventDefault();
@@ -33,6 +38,12 @@ const SearchInput = ({
 
     const handleModeChange = (selectedMode: 'Twitch' | 'YouTube') => {
         setMode(selectedMode);
+    };
+
+    const handleDemoVideosClick = () => {
+        setPlatform('Demo');
+        dispatch(setPlatform('Demo'));
+        dispatch(fetchDemoVideos());
     };
 
     return (
@@ -59,6 +70,13 @@ const SearchInput = ({
                     onClick={() => handleModeChange('YouTube')}
                 >
                     YouTube
+                </button>
+                <button
+                    type="button"
+                    className={demoButton}
+                    onClick={handleDemoVideosClick}
+                >
+                    Demo
                 </button>
             </section>
         </form>

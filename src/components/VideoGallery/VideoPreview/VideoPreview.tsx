@@ -1,4 +1,5 @@
 import { formatDistanceToNow } from 'date-fns';
+import { VideoSource } from '../../../interfaces';
 import classes from './VideoPreview.module.scss';
 
 const {
@@ -9,6 +10,7 @@ const {
   sourceBadge,
   twitchBadge,
   youtubeBadge,
+  demoBadge,
   videoInfo,
   videoTitle,
   videoChannelName,
@@ -16,7 +18,7 @@ const {
   viewCount: viewCountClass,
   publishedAt: publishedAtClass,
   twitchVideo,
-  youtubeVideo
+  youtubeVideo,
 } = classes;
 
 interface VideoPreviewProps {
@@ -27,8 +29,8 @@ interface VideoPreviewProps {
   viewCount?: number;
   duration?: string;
   publishedAt?: string;
-  source: 'Twitch' | 'YouTube';
-  onSelect: (id: string, source: 'Twitch' | 'YouTube') => void;
+  source: VideoSource;
+  onSelect: (id: string, source: VideoSource) => void;
 }
 
 const VideoPreview = ({
@@ -54,7 +56,21 @@ const VideoPreview = ({
     : '';
 
   const truncatedAltText = title.length > 60 ? `${title.substring(0, 60)}...` : title;
-  const modeContainerClass = `${videoPreviewContainer} ${source === 'Twitch' ? twitchVideo : youtubeVideo}`;
+  
+  const getSourceContainerClass = () => {
+    if (source === 'Twitch') return twitchVideo;
+    if (source === 'YouTube') return youtubeVideo;
+    return ''; // Default or for Demo
+  };
+  
+  const getSourceBadgeClass = () => {
+    if (source === 'Twitch') return twitchBadge;
+    if (source === 'YouTube') return youtubeBadge;
+    if (source === 'Demo') return demoBadge;
+    return '';
+  };
+  
+  const modeContainerClass = `${videoPreviewContainer} ${getSourceContainerClass()}`;
 
   return (
     <article
@@ -68,7 +84,7 @@ const VideoPreview = ({
           className={thumbnail}
         />
         {duration && <span className={durationTag}>{duration}</span>}
-        <span className={`${sourceBadge} ${source === 'Twitch' ? twitchBadge : youtubeBadge}`}>
+        <span className={`${sourceBadge} ${getSourceBadgeClass()}`}>
           {source}
         </span>
       </figure>

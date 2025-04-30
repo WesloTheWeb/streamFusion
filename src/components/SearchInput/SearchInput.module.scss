@@ -77,3 +77,12 @@
         background-color: #ff0000;
     }
 }
+
+.demoButton {
+    background-color: orange;
+    color: #333;
+
+    &:hover:not(:disabled) {
+        background-color: darken(orange, 10%);
+    }
+}

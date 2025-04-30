@@ -1,20 +1,18 @@
 import { useEffect, useRef, useState } from 'react';
 import videojs from 'video.js';
 import 'video.js/dist/video-js.css';
-import {
-  initializeHls,
-  isHlsSupported,
-  initializeShaka,
-  isShakaSupported,
-  detectStreamType,
-  getSourceType
-} from '../../services';
+import { initializeHls, isHlsSupported, initializeShaka, isShakaSupported, getSourceType, detectStreamType } from '../../services';
 import classes from './VideoPlayer.module.scss';
 
 const {
-  'video-player-wrapper': videoPlayerWrapper,
-  'video-player': videoPlayer,
-  'video-pip-mode': videoPipMode
+  videoPlayerWrapper,
+  videoPlayer,
+  videoPipMode,
+  loadingSpinner,
+  errorMessage,
+  retryButton,
+  pipCloseButton,
+  spinner
 } = classes;
 
 interface VideoPlayerProps {
@@ -26,7 +24,7 @@ interface VideoPlayerProps {
   isPip?: boolean;
   onPipToggle?: (isPip: boolean) => void;
   onReady?: (player: any) => void;
-};
+}
 
 const VideoPlayer = ({
   src,
@@ -40,99 +38,181 @@ const VideoPlayer = ({
 }: VideoPlayerProps) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const playerRef = useRef<any>(null);
+  const shakaRef = useRef<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!playerRef.current && videoRef.current) {
-      const videoElement = videoRef.current;
+  // Handle player errors
+  const handleError = (message: string) => {
+    console.error(`Player error: ${message}`);
+    setError(message);
+    setIsLoading(false);
+  };
 
-      // Detect stream type based on src URL
-      const streamType = detectStreamType(src);
-      const isHlsSource = streamType === 'hls';
-      const isDashSource = streamType === 'dash';
+  // Initialize the appropriate player based on stream type
+  // TODO - Separate demo page for building and reconstructing players.
+  const initializePlayer = async () => {
+    if (!videoRef.current) return;
+    
+    setIsLoading(true);
+    setError(null);
+    
+    const videoElement = videoRef.current;
+    const streamType = detectStreamType(src);
+    
+    console.log(`Initializing player for ${streamType} stream: ${src}`);
+    
+    try {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Initialize Video.js player
+      playerRef.current = videojs(videoElement, {
+        controls,
+        autoplay,
+        preload: 'auto',
+        fluid: true,
+        poster: poster,
+        width: '100%',
+        height: 480, // Set a consistent height to match YouTube player
+        sources: [{
+          src: src,
+          type: getSourceType(streamType)
+        }]
+      });
 
-      try {
-        // Initialize Video.js player
-        playerRef.current = videojs(videoElement, {
-          controls,
-          autoplay,
-          preload: 'auto',
-          fluid: true,
-          poster: poster,
-          sources: [{
-            src: src,
-            type: getSourceType(streamType)
-          }]
+      playerRef.current.on('loadeddata', () => {
+        setIsLoading(false);
+      });
+
+      playerRef.current.on('error', () => {
+        const error = playerRef.current.error();
+        handleError(`Player error: ${error ? error.message : 'Unknown error'}`);
+      });
+
+      if (onReady) {
+        playerRef.current.ready(() => {
+          onReady(playerRef.current);
         });
+      }
 
-        playerRef.current.on('loadeddata', () => {
-          setIsLoading(false);
-        });
-
-        if (onReady) {
+      // For HLS streams, wait for video.js to be fully ready before initializing HLS.js
+      if (streamType === 'hls') {
+        // console.log('Using HLS.js for HLS stream');
+        const hlsSupported = await isHlsSupported();
+        
+        if (hlsSupported) {
           playerRef.current.ready(() => {
-            onReady(playerRef.current);
+            initializeHls(videoElement, src, handleError);
           });
-        };
+        } else {
+          console.error('HLS.js not supported, falling back to native playback');
+        }
+      }
+      // For DASH streams, use Shaka Player if supported
+      else if (streamType === 'dash') {
+        // console.log('Using Shaka Player for DASH stream');
+        const shakaSupported = await isShakaSupported();
+        
+        if (shakaSupported) {
+          playerRef.current.ready(() => {
+            shakaRef.current = initializeShaka(videoElement, src, handleError);
+          });
+        } else {
+          handleError('DASH playback not supported in this browser');
+        }
+      }
+    } catch (err) {
+      console.error('Error initializing player:', err);
+      handleError('Failed to initialize video player');
+    }
+  };
 
-        if (title) {
-          const titleOverlay = document.createElement('div');
-          titleOverlay.className = 'vjs-title-overlay';
-          titleOverlay.textContent = title;
-          playerRef.current.el().appendChild(titleOverlay);
-        };
-
-        if (isHlsSource && isHlsSupported()) {
-          initializeHls(videoElement, src, setError);
-        } else if (isDashSource && isShakaSupported()) {
-          initializeShaka(videoElement, src, setError);
-        };
-      } catch (err) {
-        console.error('Error initializing player:', err);
-        setError('Failed to initialize video player');
-      };
-    };
-
+  useEffect(() => {
+    initializePlayer();
+    
     return () => {
+      if (shakaRef.current) {
+        try {
+          shakaRef.current.destroy();
+        } catch (e) {
+          console.error('Failed to destroy Shaka player:', e);
+        }
+        shakaRef.current = null;
+      }
+      
       if (playerRef.current) {
-        playerRef.current.dispose();
+        try {
+          playerRef.current.dispose();
+        } catch (e) {
+          console.error('Failed to dispose Video.js player:', e);
+        }
         playerRef.current = null;
       }
     };
-  }, [src, controls, autoplay, poster, title, onReady]);
+  }, [src, controls, autoplay, poster, title]);
 
+  // Toggle Picture-in-Picture mode
   const togglePip = () => {
     if (onPipToggle) {
       onPipToggle(!isPip);
-    };
+    }
+  };
+
+  // Retry loading the video
+  const handleRetry = () => {
+    setError(null);
+    
+    // Clean up existing players
+    if (shakaRef.current) {
+      try {
+        shakaRef.current.destroy();
+      } catch (e) {
+        console.error('Failed to destroy Shaka player:', e);
+      }
+      shakaRef.current = null;
+    }
+    
+    if (playerRef.current) {
+      try {
+        playerRef.current.dispose();
+      } catch (e) {
+        console.error('Failed to dispose Video.js player:', e);
+      }
+      playerRef.current = null;
+    }
+    
+    // Reinitialize the player
+    setTimeout(initializePlayer, 100);
   };
 
   return (
     <div className={`${videoPlayerWrapper} ${isPip ? videoPipMode : ''}`}>
       <section className={videoPlayer}>
         {isLoading && (
-          <div className={classes['loading-spinner']}>
-            <div className={classes.spinner}></div>
+          <div className={loadingSpinner}>
+            <div className={spinner}></div>
           </div>
         )}
         {error && (
-          <div className={classes['error-message']}>
+          <div className={errorMessage}>
             <p>{error}</p>
-            <button onClick={() => setError(null)} className={classes['retry-button']}>
+            <button onClick={handleRetry} className={retryButton}>
               Retry
             </button>
           </div>
         )}
-        <video
-          ref={videoRef}
-          className="video-js vjs-big-play-centered"
-          playsInline
-          data-setup="{}"
-        />
+        <div>
+          <video
+            ref={videoRef}
+            className="video-js vjs-big-play-centered"
+            playsInline
+            style={{ width: '100%', height: '100%' }}
+            data-setup="{}"
+          />
+        </div>
         {isPip && (
           <button
-            className={classes['pip-close-button']}
+            className={pipCloseButton}
             onClick={togglePip}
             aria-label="Close Picture-in-Picture"
           >
@@ -145,3 +225,5 @@ const VideoPlayer = ({
 };
 
 export default VideoPlayer;
+
+// TODO - Player construct and tear down is complex need a dedicated page for this.

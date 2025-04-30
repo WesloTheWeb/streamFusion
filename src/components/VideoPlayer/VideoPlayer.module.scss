@@ -1,18 +1,30 @@
 @use '../../styles/variables.scss' as v;
 
-.video-player-wrapper {
+.videoPlayerWrapper {
   position: relative;
   width: 100%;
   margin: 0 auto;
   background-color: #000;
 }
 
-.video-player {
+.videoPlayer {
   width: 100%;
+  position: relative;
+  min-height: 480px;
 }
 
 /* Global video.js styles that shouldn't be processed by CSS modules */
 :global(.video-js) {
+  width: 100%;
+  height: 100% !important; /* Force height to 100% to fill container */
+  min-height: 480px; /* Match YouTube player height */
+  aspect-ratio: 16 / 9; /* Maintain aspect ratio */
+}
+
+:global(.video-js .vjs-tech) {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
 }
@@ -46,8 +58,15 @@
   background-color: v.$twitch-primary !important;
 }
 
-/* Loading spinner */
-.loading-spinner {
+.videoTitle {
+  color: white;
+  padding: 10px;
+  margin: 0;
+  font-size: 1.2rem;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.loadingSpinner {
   position: absolute;
   top: 0;
   left: 0;
@@ -74,7 +93,7 @@
 }
 
 /* Error message */
-.error-message {
+.errorMessage {
   position: absolute;
   top: 0;
   left: 0;
@@ -89,12 +108,12 @@
   z-index: 20;
 }
 
-.error-message p {
+.errorMessage p {
   margin-bottom: 20px;
   font-size: 16px;
 }
 
-.retry-button {
+.retryButton {
   padding: 8px 16px;
   background-color: v.$twitch-primary;
   color: white;
@@ -109,7 +128,7 @@
 }
 
 /* PiP close button */
-.pip-close-button {
+.pipCloseButton {
   position: absolute;
   top: 5px;
   right: 5px;
@@ -133,7 +152,7 @@
 }
 
 /* Picture-in-Picture mode */
-.video-pip-mode {
+.videoPipMode {
   position: fixed;
   right: 20px;
   bottom: 20px;
