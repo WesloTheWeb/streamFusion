@@ -5,14 +5,14 @@ import { initializeHls, isHlsSupported, initializeShaka, isShakaSupported, getSo
 import classes from './VideoPlayer.module.scss';
 
 const {
-  'video-player-wrapper': videoPlayerWrapper,
-  'video-player': videoPlayer,
-  'video-pip-mode': videoPipMode,
-  'loading-spinner': loadingSpinner,
-  'error-message': errorMessageClass,
-  'retry-button': retryButton,
-  'pip-close-button': pipCloseButton,
-  'spinner': spinnerClass
+  videoPlayerWrapper,
+  videoPlayer,
+  videoPipMode,
+  loadingSpinner,
+  errorMessage,
+  retryButton,
+  pipCloseButton,
+  spinner
 } = classes;
 
 interface VideoPlayerProps {
@@ -62,6 +62,10 @@ const VideoPlayer = ({
     console.log(`Initializing player for ${streamType} stream: ${src}`);
     
     try {
+      // Make sure video element is properly in the DOM before initializing
+      // Add a slight delay to ensure the DOM has time to update
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
       // Initialize Video.js player
       playerRef.current = videojs(videoElement, {
         controls,
@@ -69,6 +73,8 @@ const VideoPlayer = ({
         preload: 'auto',
         fluid: true,
         poster: poster,
+        width: '100%',
+        height: 480, // Set a consistent height to match YouTube player
         sources: [{
           src: src,
           type: getSourceType(streamType)
@@ -97,13 +103,16 @@ const VideoPlayer = ({
         playerRef.current.el().appendChild(titleOverlay);
       }
 
-      // For HLS streams, use HLS.js if supported
+      // For HLS streams, wait for video.js to be fully ready before initializing HLS.js
       if (streamType === 'hls') {
         console.log('Using HLS.js for HLS stream');
         const hlsSupported = await isHlsSupported();
         
         if (hlsSupported) {
-          initializeHls(videoElement, src, handleError);
+          // Make sure the player is fully ready before attaching HLS
+          playerRef.current.ready(() => {
+            initializeHls(videoElement, src, handleError);
+          });
         } else {
           console.log('HLS.js not supported, falling back to native playback');
         }
@@ -114,7 +123,10 @@ const VideoPlayer = ({
         const shakaSupported = await isShakaSupported();
         
         if (shakaSupported) {
-          shakaRef.current = await initializeShaka(videoElement, src, handleError);
+          // Wait for player to be ready
+          playerRef.current.ready(() => {
+            shakaRef.current = initializeShaka(videoElement, src, handleError);
+          });
         } else {
           handleError('DASH playback not supported in this browser');
         }
@@ -188,23 +200,26 @@ const VideoPlayer = ({
       <section className={videoPlayer}>
         {isLoading && (
           <div className={loadingSpinner}>
-            <div className={spinnerClass}></div>
+            <div className={spinner}></div>
           </div>
         )}
         {error && (
-          <div className={errorMessageClass}>
+          <div className={errorMessage}>
             <p>{error}</p>
             <button onClick={handleRetry} className={retryButton}>
               Retry
             </button>
           </div>
         )}
-        <video
-          ref={videoRef}
-          className="video-js vjs-big-play-centered"
-          playsInline
-          data-setup="{}"
-        />
+        <div style={{ height: '480px', width: '100%' }}>
+          <video
+            ref={videoRef}
+            className="video-js vjs-big-play-centered"
+            playsInline
+            style={{ width: '100%', height: '100%' }}
+            data-setup="{}"
+          />
+        </div>
         {isPip && (
           <button
             className={pipCloseButton}
