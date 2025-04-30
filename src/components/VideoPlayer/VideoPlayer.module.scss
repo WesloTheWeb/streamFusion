@@ -1,4 +1,5 @@
 @use '../../styles/variables.scss' as v;
+@use 'sass:color';
 
 .videoPlayerWrapper {
   position: relative;
@@ -123,7 +124,7 @@
   transition: all 0.2s ease;
   
   &:hover {
-    background-color: darken(v.$twitch-primary, 10%);
+    background-color: color.adjust(v.$twitch-primary, $lightness: -10%)
   }
 }
 
