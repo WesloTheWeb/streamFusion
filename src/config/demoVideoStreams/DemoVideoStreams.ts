@@ -10,7 +10,7 @@ export const getDemoVideos = (): DemoVideo[] => [
         duration: '9:56',
         publishedAt: '2022-04-15T14:30:00Z',
         source: 'Demo',
-        streamUrl: 'https://multiplatform-f.akamaihd.net/i/multi/will/bunny/big_buck_bunny_,640x360_400,640x360_700,640x360_1000,950x540_1500,.mp4.csmil/master.m3u8',
+        streamUrl: 'https://cdn.theoplayer.com/video/big_buck_bunny/big_buck_bunny.m3u8',
         streamType: 'hls'
     },
     {
@@ -22,7 +22,7 @@ export const getDemoVideos = (): DemoVideo[] => [
         duration: '12:14',
         publishedAt: '2022-05-20T10:15:00Z',
         source: 'Demo',
-        streamUrl: 'https://storage.googleapis.com/shaka-demo-assets/angel-one/dash.mpd',
+        streamUrl: 'https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.mpd',
         streamType: 'dash'
     },
     {
@@ -34,7 +34,7 @@ export const getDemoVideos = (): DemoVideo[] => [
         duration: '10:53',
         publishedAt: '2022-03-10T08:20:00Z',
         source: 'Demo',
-        streamUrl: 'https://devstreaming-cdn.apple.com/videos/streaming/examples/img_bipbop_adv_example_ts/master.m3u8',
+        streamUrl: 'https://d2zihajmogu5jn.cloudfront.net/sintel/master.m3u8',
         streamType: 'hls'
     }
 ];
