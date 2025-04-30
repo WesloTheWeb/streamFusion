@@ -1,9 +1,13 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { fetchYouTubeVideos, clearVideos } from './videoSlice';
+import { 
+    fetchYouTubeVideos, 
+    clearVideos, 
+    fetchDemoVideos
+ } from './videoSlice';
 
 export interface SearchState {
     query: string;
-    platform: 'YouTube' | 'Twitch';
+    platform: 'YouTube' | 'Twitch' | 'Demo';
     loading: boolean;
     error: string | null;
 }
@@ -17,13 +21,16 @@ const initialState: SearchState = {
 
 export const performSearch = createAsyncThunk(
     'search/performSearch',
-    async ({ query, platform }: { query: string; platform: 'YouTube' | 'Twitch' }, { dispatch, rejectWithValue }) => {
+    async ({ query, platform }: { query: string; platform: 'YouTube' | 'Twitch' | 'Demo' }, { dispatch, rejectWithValue }) => {
         try {
             dispatch(setQuery(query));
             dispatch(setPlatform(platform));
             dispatch(clearVideos());
 
-            if (query.trim()) {
+            if (platform === 'Demo') {
+                const result = await dispatch(fetchDemoVideos()).unwrap();
+                return result;
+            } else if (query.trim()) {
                 if (platform === 'YouTube') {
                     const result = await dispatch(fetchYouTubeVideos({ query })).unwrap();
                     return result;
@@ -47,7 +54,7 @@ export const searchSlice = createSlice({
         setQuery: (state, action: PayloadAction<string>) => {
             state.query = action.payload;
         },
-        setPlatform: (state, action: PayloadAction<'YouTube' | 'Twitch'>) => {
+        setPlatform: (state, action: PayloadAction<'YouTube' | 'Twitch' | 'Demo'>) => {
             state.platform = action.payload;
         },
         clearSearch: (state) => {
